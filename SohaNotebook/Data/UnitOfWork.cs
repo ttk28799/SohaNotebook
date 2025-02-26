@@ -1,9 +1,10 @@
-﻿using SohaNotebook.DbSet.IRepository;
+﻿using SohaNotebook.DbSet.IConfiguration;
+using SohaNotebook.DbSet.IRepository;
 using SohaNotebook.DbSet.Repository;
 
 namespace SohaNotebook.Data
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly AppDbContext _context;
         private readonly ILogger _logger;
@@ -12,8 +13,20 @@ namespace SohaNotebook.Data
             _context = context;
             _logger = loggerFactory.CreateLogger("db_logs");
 
-            Users = new UserRepository(_context, _logger);
+            Users = new UsersRepository(_context, _logger);
         }
-        public IUserRepository Users { get; private set; }
+        public IUsersRepository Users { get; private set; }
+
+        public IUsersRepository UserRepository => throw new NotImplementedException();
+
+        public async Task CompleteAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
     }
 }

@@ -4,9 +4,9 @@ using SohaNotebook.DbSet.IRepository;
 
 namespace SohaNotebook.DbSet.Repository
 {
-    public class UserRepository : GenericRepository<User>, IUserRepository
+    public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
-        public UserRepository(AppDbContext context, ILogger logger) : base(context, logger)
+        public UsersRepository(AppDbContext context, ILogger logger) : base(context, logger)
         {
 
         }
@@ -21,7 +21,7 @@ namespace SohaNotebook.DbSet.Repository
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "{Repo} Chức năng All đã tạo ra một lỗi", typeof(UserRepository));
+                _logger.LogError(ex, "{Repo} Chức năng All đã tạo ra một lỗi", typeof(UsersRepository));
                 return new List<User>();
             }
         }

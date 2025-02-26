@@ -1,6 +1,6 @@
 ﻿namespace SohaNotebook.DbSet.IRepository
 {
-    public interface IUserRepository : IGenericRepository<User>
+    public interface IUsersRepository : IGenericRepository<User>
     {
         
     }
