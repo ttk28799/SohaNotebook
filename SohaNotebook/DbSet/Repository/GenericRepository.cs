@@ -14,6 +14,7 @@ namespace SohaNotebook.DbSet.Repository
         {
             _context = context;
             _logger = logger;
+            dbSet = context.Set<T>();
         }
 
         public virtual async Task<bool> CreateAsync(T entity)

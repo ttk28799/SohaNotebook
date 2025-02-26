@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SohaNotebook.Data;
 using SohaNotebook.DbSet;
+using SohaNotebook.DbSet.IConfiguration;
 using SohaNotebook.Dtos.Incomming;
+using System.Threading.Tasks;
 
 namespace SohaNotebook.Controllers
 {
@@ -10,22 +12,25 @@ namespace SohaNotebook.Controllers
 
     public class UsersController : ControllerBase
     {
-        private AppDbContext? _context;
+        //private AppDbContext? _context;
+        private IUnitOfWork _unitOfWork;
 
-        public UsersController(AppDbContext context)
+        public UsersController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            //_context = context;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var users = _context?.Users.Where(u => u.Status == 1).ToList();
+            //var users = _context?.Users.Where(u => u.Status == 1).ToList();
+            var users = await _unitOfWork.Users.GetAllAsync();
             return Ok(users);
         }
 
         [HttpPost]
-        public IActionResult CreateUser(UserDto user)
+        public async Task<IActionResult> CreateUser(UserDto user)
         {
             var _user = new User();
             _user.FirstName = user.FirstName;
@@ -35,8 +40,15 @@ namespace SohaNotebook.Controllers
             _user.Phone = user.Phone;
             _user.Country = user.Country;
             _user.Status = 1;
-            _context?.Users.Add(_user);
-            _context?.SaveChanges();
+            await _unitOfWork.Users.CreateAsync(_user);
+            await _unitOfWork.CompleteAsync();
+            return CreatedAtRoute("GetUser", new{id = _user.Id}, user);
+        }
+
+        [HttpGet("GetUser", Name = "GetUser")]
+        public async Task<IActionResult> GetUser(Guid id)
+        {
+            var user = await _unitOfWork.Users.GetById(id);
             return Ok(user);
         }
     }

@@ -2,6 +2,6 @@
 {
     public interface IUsersRepository : IGenericRepository<User>
     {
-        
+
     }
 }

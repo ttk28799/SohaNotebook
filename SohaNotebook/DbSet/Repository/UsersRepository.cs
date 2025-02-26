@@ -21,7 +21,7 @@ namespace SohaNotebook.DbSet.Repository
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "{Repo} Chức năng All đã tạo ra một lỗi", typeof(UsersRepository));
+                _logger.LogError(ex, "{Repo} function GetAllAsync return an error", typeof(UsersRepository));
                 return new List<User>();
             }
         }

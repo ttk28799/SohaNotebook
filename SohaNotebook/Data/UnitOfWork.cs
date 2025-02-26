@@ -8,14 +8,14 @@ namespace SohaNotebook.Data
     {
         private readonly AppDbContext _context;
         private readonly ILogger _logger;
+        public IUsersRepository Users { get; private set; }
         public UnitOfWork(AppDbContext context, ILoggerFactory loggerFactory)
         {
             _context = context;
             _logger = loggerFactory.CreateLogger("db_logs");
 
-            Users = new UsersRepository(_context, _logger);
+            Users = new UsersRepository(context, _logger);
         }
-        public IUsersRepository Users { get; private set; }
 
         public IUsersRepository UserRepository => throw new NotImplementedException();
 

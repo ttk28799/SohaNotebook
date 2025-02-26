@@ -4,7 +4,7 @@ namespace SohaNotebook.DbSet.IConfiguration
 {
     public interface IUnitOfWork
     {
-        IUsersRepository UserRepository { get; }
+        IUsersRepository Users { get; }
         Task CompleteAsync();
     }
 }
